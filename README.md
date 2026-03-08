@@ -1,17 +1,16 @@
-# Installed Apps
+# Device App Info List
 
-**Installed Apps** is a Flutter plugin that provides utilities to interact with installed apps on a
-device. You can list installed apps, get app info, launch apps, open settings, and more.
+**Version:** 1.0.0
+
+**Device App Info List** (`device_app_info_list`) is a Flutter plugin that provides utilities to interact with installed apps on a device. You can list installed apps, get app info (including installer source), launch apps, open settings, and more.
 
 > ⚠️ Currently, only Android is supported. iOS methods return default/fallback values.
 
 ---
 
-## Version 2.0.0 Breaking Changes
+## API note
 
-Version 2.0.0 has some breaking changes, for example, `getInstalledApps` now uses **named arguments
-** instead of positional arguments as before. Additionally, some other argument names have been
-updated.
+`getInstalledApps` and other methods use **named arguments**. Types like `AppInfo`, `PlatformType`, and `AppCategory` are exported from `package:device_app_info_list`.
 
 ## Features
 
@@ -43,9 +42,15 @@ Example project: [GitHub](https://github.com/ushodmonov/device_app_info_list/tre
 
 ## Usage
 
+Add the dependency and import:
+
+```dart
+import 'package:device_app_info_list/installed_apps.dart';
+```
+
 ### Get Installed Apps
 
-```
+```dart
 List<AppInfo> apps = await InstalledApps.getInstalledApps(
   // Optional: whether to exclude system apps from the list. Default is true.
   excludeSystemApps: true,
@@ -66,11 +71,11 @@ List<AppInfo> apps = await InstalledApps.getInstalledApps(
 
 ### Get App Info
 
-```
+```dart
 AppInfo? app = await InstalledApps.getAppInfo("com.example.myapp");
 ```
 
-### AppInfo Model
+### AppInfo model
 
 ```dart
 class AppInfo {
@@ -100,31 +105,31 @@ class AppInfo {
 
 ### Launch App
 
-```
+```dart
 await InstalledApps.startApp("com.example.myapp");
 ```
 
 ### Open App Settings
 
-```
+```dart
 InstalledApps.openSettings("com.example.myapp");
 ```
 
 ### Check System App
 
-```
+```dart
 bool? isSystem = await InstalledApps.isSystemApp("com.example.myapp");
 ```
 
 ### Uninstall App
 
-```
+```dart
 bool? success = await InstalledApps.uninstallApp("com.example.myapp");
 ```
 
 ### Check if Installed
 
-```
+```dart
 bool? installed = await InstalledApps.isAppInstalled("com.example.myapp");
 ```
 
@@ -167,10 +172,10 @@ enum PlatformType {
 
 ### QUERY_ALL_PACKAGES Permission and Play Store Review
 
-The `QUERY_ALL_PACKAGES` permission is required for some functionality of this package, but
+The `QUERY_ALL_PACKAGES` permission is required for some functionality of `device_app_info_list`, but
 including it can cause Play Store rejections if your app doesn’t justify it. To handle this, either
 declare its necessity in the Play Store listing or use `tools:node="remove"` in your manifest to
-exclude it while still using the package (note this will limit visibility to all apps). For
+exclude it while still using the plugin (note this will limit visibility to all apps). For
 multi-flavor setups, you can include the permission in `src/dev/AndroidManifest.xml` for
 internal/dev builds and remove it in `src/playstore/AndroidManifest.xml` for Play Store builds,
 ensuring each flavor has the correct manifest without affecting core functionality.
