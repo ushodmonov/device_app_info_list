@@ -17,6 +17,11 @@ class PlatformTypeUtil {
                 packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
             } catch (_: PackageManager.NameNotFoundException) {
                 return "unknown"
+            } catch (_: RuntimeException) {
+                return "unknown"
+            } catch (_: Exception) {
+                // DeadSystemException (checked) when system is shutting down or unstable
+                return "unknown"
             }
 
             packageInfo.activities?.forEach { activity ->
@@ -35,6 +40,10 @@ class PlatformTypeUtil {
                     PackageManager.GET_META_DATA
                 )?.metaData
             } catch (_: PackageManager.NameNotFoundException) {
+                null
+            } catch (_: RuntimeException) {
+                null
+            } catch (_: Exception) {
                 null
             }
 

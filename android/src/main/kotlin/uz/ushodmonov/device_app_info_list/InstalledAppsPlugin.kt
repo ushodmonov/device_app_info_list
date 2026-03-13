@@ -125,6 +125,28 @@ class InstalledAppsPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
         packageNamePrefix: String,
         platformType: PlatformType?
     ): List<Map<String, Any?>> {
+        return try {
+            getInstalledAppsInternal(
+                excludeSystemApps,
+                excludeNonLaunchableApps,
+                withIcon,
+                packageNamePrefix,
+                platformType
+            )
+        } catch (e: Exception) {
+            // DeadSystemException / DeadSystemRuntimeException when system is shutting down or unstable
+            Log.w("InstalledAppsPlugin", "getInstalledApps failed: ${e.message}")
+            emptyList()
+        }
+    }
+
+    private fun getInstalledAppsInternal(
+        excludeSystemApps: Boolean,
+        excludeNonLaunchableApps: Boolean,
+        withIcon: Boolean,
+        packageNamePrefix: String,
+        platformType: PlatformType?
+    ): List<Map<String, Any?>> {
         val packageManager = getPackageManager(context!!)
         var packageInfos = packageManager.getInstalledPackages(0)
 
@@ -156,15 +178,21 @@ class InstalledAppsPlugin : MethodCallHandler, FlutterPlugin, ActivityAware {
         }
         return packageInfos
             .filter { it.applicationInfo != null }
-            .map { packageInfo ->
-                convertAppToMap(
-                    packageManager,
-                    packageInfo,
-                    withIcon,
-                    isSystemAppOverride = if (excludeSystemApps) false else null,
-                    isLaunchableOverride = launchablePackageNames.contains(packageInfo.packageName),
-                    platformTypeOverride = platformType?.value,
-                )
+            .mapNotNull { packageInfo ->
+                try {
+                    convertAppToMap(
+                        packageManager,
+                        packageInfo,
+                        withIcon,
+                        isSystemAppOverride = if (excludeSystemApps) false else null,
+                        isLaunchableOverride = launchablePackageNames.contains(packageInfo.packageName),
+                        platformTypeOverride = platformType?.value,
+                    )
+                } catch (e: Exception) {
+                    // DeadSystemException / DeadSystemRuntimeException when system is shutting down or unstable
+                    Log.w("InstalledAppsPlugin", "convertAppToMap skipped ${packageInfo.packageName}: ${e.message}")
+                    null
+                }
             }
     }
 

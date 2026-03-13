@@ -30,13 +30,48 @@
 
 ## Installation
 
+### Option 1: From pub.dev (when published)
+
+If the package is published on [pub.dev](https://pub.dev), add it with:
+
 ```bash
 flutter pub add device_app_info_list
 ```
 
-Or check the [Installation Guide](https://pub.dev/packages/device_app_info_list/install).
+Or add to your `pubspec.yaml`:
 
-Example project: [GitHub](https://github.com/ushodmonov/device_app_info_list/tree/master/example)
+```yaml
+dependencies:
+  device_app_info_list: ^1.0.0
+```
+
+Then run `flutter pub get`.
+
+### Option 2: From GitHub (without pub.dev)
+
+To use the package directly from GitHub (e.g. before publishing or to use a specific branch/commit), add the dependency in your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  device_app_info_list:
+    git:
+      url: https://github.com/ushodmonov/device_app_info_list.git
+      ref: main   # or: develop, or a tag like v1.0.0, or a commit hash
+```
+
+Then run:
+
+```bash
+flutter pub get
+```
+
+Use the same import in your Dart code in both cases:
+
+```dart
+import 'package:device_app_info_list/installed_apps.dart';
+```
+
+**Example project:** [GitHub](https://github.com/ushodmonov/device_app_info_list/tree/main/example)
 
 ---
 
