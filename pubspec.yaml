@@ -1,6 +1,6 @@
 name: device_app_info_list
 description: Flutter plugin with utility methods related to installed apps on device.
-version: 1.0.0
+version: 1.0.0+2
 homepage: https://github.com/ushodmonov/device_app_info_list
 
 environment:
