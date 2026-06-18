@@ -1,34 +1,13 @@
+plugins {
+    id "com.android.library"
+    id "org.jetbrains.kotlin.android"
+}
+
 group = "uz.ushodmonov.device_app_info_list"
 version = "1.0-SNAPSHOT"
 
-buildscript {
-    ext.kotlin_version = "2.2.21"
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath("com.android.tools.build:gradle:8.13.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
-
 android {
-    if (project.android.hasProperty("namespace")) {
-        namespace = "uz.ushodmonov.device_app_info_list"
-    }
-
+    namespace = "uz.ushodmonov.device_app_info_list"
     compileSdk = 36
 
     compileOptions {
@@ -48,8 +27,4 @@ android {
     defaultConfig {
         minSdk = 16
     }
-
-    dependencies {
-    }
-
 }
